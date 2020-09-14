@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>image2D - 性能基准测试 - svg画笔</title>
+    <link rel="shortcut icon" href="../../docs/src/assets/image2D.png">
+    <script src="./JSLitmus.js"></script>
+    <script src="../../build/image2D.js"></script>
+</head>
+
+<body>
+    <script>
+
+        var image2D = $$('<svg>').appendTo('body').attr({
+            width: 500,
+            height: 100
+        });
+
+        // 文字
+        var painter1 = image2D.painter().bind('<text>').appendTo();
+        JSLitmus.test('fillText', function () { painter1.fillText('fillText', 50, 50); });
+        var painter2 = image2D.painter().bind('<text>').appendTo();
+        JSLitmus.test('strokeText', function () { painter2.strokeText('strokeText', 50, 50); });
+        var painter3 = image2D.painter().bind('<text>').appendTo();
+        JSLitmus.test('fullText', function () { painter3.fullText('fullText', 50, 50); });
+
+        // 弧
+        var painter4 = image2D.painter().bind('<path>').appendTo();
+        JSLitmus.test('fillArc', function () { painter4.fillArc(50, 50, 10, 30, 0, 1); });
+        var painter5 = image2D.painter().bind('<path>').appendTo();
+        JSLitmus.test('strokeArc', function () { painter5.strokeArc(50, 50, 10, 30, 0, 1); });
+        var painter6 = image2D.painter().bind('<path>').appendTo();
+        JSLitmus.test('fullArc', function () { painter6.fullArc(50, 50, 10, 30, 0, 1); });
+
+        // 矩形
+        var painter7 = image2D.painter().bind('<rect>').appendTo();
+        JSLitmus.test('fillRect', function () { painter7.fillRect(0, 0, 100, 100); });
+        var painter8 = image2D.painter().bind('<rect>').appendTo();
+        JSLitmus.test('strokeRect', function () { painter8.strokeRect(0, 0, 100, 100); });
+        var painter9 = image2D.painter().bind('<rect>').appendTo();
+        JSLitmus.test('fullRect', function () { painter9.fullRect(0, 0, 100, 100); });
+
+        // 圆
+        var painter10 = image2D.painter().bind('<circle>').appendTo();
+        JSLitmus.test('fillCircle', function () { painter10.fillCircle(0, 0, 100); });
+        var painter11 = image2D.painter().bind('<circle>').appendTo();
+        JSLitmus.test('strokeCircle', function () { painter11.strokeCircle(0, 0, 100); });
+        var painter12 = image2D.painter().bind('<circle>').appendTo();
+        JSLitmus.test('fullCircle', function () { painter12.fullCircle(0, 0, 100); });
+
+    </script>
+
+</body>
+
+</html>
