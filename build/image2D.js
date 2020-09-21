@@ -7,14 +7,14 @@
 *
 * author yelloxing
 *
-* version 1.9.0
+* version 1.10.4
 *
 * build Thu Apr 11 2019
 *
 * Copyright yelloxing
 * Released under the MIT license
 *
-* Date:Sun Sep 13 2020 15:54:55 GMT+0800 (GMT+08:00)
+* Date:Sun Sep 20 2020 10:00:54 GMT+0800 (GMT+08:00)
 */
 
 'use strict';
@@ -1543,10 +1543,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     };
 
     // 获取一组随机色彩
-    var getRandomColors = function getRandomColors(num) {
+    var getRandomColors = function getRandomColors(num, alpha) {
+        if (!(alpha && alpha >= 0 && alpha <= 1)) alpha = 1;
         var temp = [];
         for (var flag = 1; flag <= num; flag++) {
-            temp.push('rgb(' + (Math.random(1) * 230 + 20).toFixed(0) + ',' + (Math.random(1) * 230 + 20).toFixed(0) + ',' + (Math.random(1) * 230 + 20).toFixed(0) + ')');
+            temp.push('rgba(' + (Math.random(1) * 230 + 20).toFixed(0) + ',' + (Math.random(1) * 230 + 20).toFixed(0) + ',' + (Math.random(1) * 230 + 20).toFixed(0) + ',' + alpha + ')');
         }
         return temp;
     };
@@ -2034,8 +2035,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     // beginA起点弧度，rotateA旋转弧度式
     function arc(beginA, rotateA, cx, cy, r1, r2, doback) {
 
-        if (rotateA > Math.PI * 2) rotateA = Math.PI * 2;
-        if (rotateA < -Math.PI * 2) rotateA = -Math.PI * 2;
+        // 有了前置的判断，这里可以省略了
+        // if (rotateA > Math.PI * 2) rotateA = Math.PI * 2;
+        // if (rotateA < -Math.PI * 2) rotateA = -Math.PI * 2;
 
         // 保证逆时针也是可以的
         if (rotateA < 0) {
@@ -2067,6 +2069,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
     // 文字统一设置方法
     var initText = function initText(painter, config, x, y, deg) {
+
         painter.beginPath();
         painter.translate(x, y);
         painter.rotate(deg);
@@ -2077,9 +2080,20 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     // 画弧统一设置方法
     var initArc = function initArc(painter, config, cx, cy, r1, r2, beginDeg, deg) {
 
+        if (r1 > r2) {
+            var temp = r1;
+            r1 = r2;
+            r2 = temp;
+        }
+
+        beginDeg = beginDeg % (Math.PI * 2);
+
         // 当|deg|>=2π的时候都认为是一个圆环
-        if (deg >= Math.PI * 2 || deg <= -Math.PI * 2) {
+        // 为什么不取2π比较，是怕部分浏览器浮点不精确，同时也是为了和svg保持一致
+        if (deg >= Math.PI * 1.999999 || deg <= -Math.PI * 1.999999) {
             deg = Math.PI * 2;
+        } else {
+            deg = deg % (Math.PI * 2);
         }
 
         arc(beginDeg, deg, cx, cy, r1, r2, function (beginA, endA, begInnerX, begInnerY, begOuterX, begOuterY, endInnerX, endInnerY, endOuterX, endOuterY, r) {
@@ -2095,7 +2109,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             // 开头
             if (config["arc-start-cap"] != 'round') painter.lineTo(begInnerX, begInnerY);else painter.arc((begInnerX + begOuterX) * 0.5, (begInnerY + begOuterY) * 0.5, r, beginA, beginA - Math.PI, true);
         });
-        painter.closePath();
+        if (config["arc-start-cap"] == 'butt') painter.closePath();
         return painter;
     };
 
@@ -2445,6 +2459,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     var initText$1 = function initText$1(painter, config, x, y, deg) {
         if (!painter || painter.length <= 0 || painter[0].nodeName.toLowerCase() !== 'text') throw new Error('Need a <text> !');
 
+        deg = deg % (Math.PI * 2);
+
         // 垂直对齐采用dy实现
         painter.attr('dy', {
             "top": config['font-size'] * 0.5,
@@ -2469,12 +2485,23 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     // 画弧统一设置方法
     var initArc$1 = function initArc$1(painter, config, cx, cy, r1, r2, beginDeg, deg) {
 
+        if (!painter || painter.length <= 0 || painter[0].nodeName.toLowerCase() !== 'path') throw new Error('Need a <path> !');
+
+        beginDeg = beginDeg % (Math.PI * 2);
+
+        if (r1 > r2) {
+            var temp = r1;
+            r1 = r2;
+            r2 = temp;
+        }
+
         // 当|deg|>=2π的时候都认为是一个圆环
         if (deg >= Math.PI * 1.999999 || deg <= -Math.PI * 1.999999) {
             deg = Math.PI * 1.999999;
+        } else {
+            deg = deg % (Math.PI * 2);
         }
 
-        if (!painter || painter.length <= 0 || painter[0].nodeName.toLowerCase() !== 'path') throw new Error('Need a <path> !');
         arc(beginDeg, deg, cx, cy, r1, r2, function (beginA, endA, begInnerX, begInnerY, begOuterX, begOuterY, endInnerX, endInnerY, endOuterX, endOuterY, r) {
             var f = endA - beginA > Math.PI ? 1 : 0,
                 d = "M" + begInnerX + " " + begInnerY;
@@ -2487,7 +2514,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             d += "A" + r2 + " " + r2 + " 0 " + f + " 0 " + begOuterX + " " + begOuterY;
             // 开头
             if (config["arc-start-cap"] != 'round') d += "L" + begInnerX + " " + begInnerY;else d += "A" + r + " " + r + " " + " 0 1 0 " + begInnerX + " " + begInnerY;
-            painter.attr('d', d + "Z");
+            if (config["arc-start-cap"] == 'butt') d += "Z";
+            painter.attr('d', d);
         });
         return painter;
     };
@@ -2835,6 +2863,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
             //  旋转
             "rotate": function rotate(deg) {
+                deg = deg % (Math.PI * 2);
                 transform_current += ' rotate(' + deg / Math.PI * 180 + ')';
                 return enhancePainter;
             },
@@ -3043,3 +3072,15 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             window.image2D = window.$$ = image2D;
         }
 })();
+                    
+/*!
+
+    我还惊讶地意识到， 在我生命中有很多时刻， 每当我遇到一个遥不可及、令人害怕的情境，
+    并感到惊慌失措时， 我都能够应付——因为我回想起了很久以前自己上过的那一课。
+    我提醒自己不要看下面遥远的岩石， 而是注意相对轻松、容易的第一小步， 迈出一小步、再一小步，
+    就这样体会每一步带来的成就感， 直到完成了自己想要完成的， 达到了自己的目标，
+    然后再回头看时， 不禁对自己走过的这段漫漫长路感到惊讶和自豪。
+
+                                            ———— 摘自 莫顿·亨特《走一步，再走一步》
+
+*/
