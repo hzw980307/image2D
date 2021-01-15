@@ -1,7 +1,6 @@
 import { initConfig } from '../../core/config';
-import isFunction from '@yelloxing/core.js/isFunction';
-import isNumber from '@yelloxing/core.js/isNumber';
 import { rotate } from '../calculate/transform';
+import { isFunction, isNumber } from '@hai2007/tool/type';
 
 export default function (config) {
 
@@ -73,6 +72,9 @@ export default function (config) {
         // 启动绘图
         if (isFunction(config.drawer)) {
             config.drawer(innerData);
+            return pieObj;
+        } else {
+            return innerData;
         }
 
     };

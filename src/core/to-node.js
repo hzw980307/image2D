@@ -1,7 +1,6 @@
 import { NAMESPACE, REGEXP } from './config';
-import isElement from '@yelloxing/core.js/isElement';
-import isString from '@yelloxing/core.js/isString';
 import { setSVG } from './polyfill';
+import { isElement, isString } from '@hai2007/tool/type';
 
 // 变成指定类型的结点
 // type可以取：
@@ -35,7 +34,7 @@ let toNode = function (template, type) {
         // 如果采用别的标签，比如div,这类标签无法生成
         // 为了方便校对，这里给出提示
         if (!/</.test(frame.innerHTML)) {
-            throw new Error('This template cannot be generated using div as a container:' + template + "\nPlease contact us: https://github.com/yelloxing/image2D/issues");
+            throw new Error('This template cannot be generated using div as a container:' + template + "\nPlease contact us: https://github.com/hai2007/image2D/issues");
         }
     } else {
         frame = document.createElementNS(NAMESPACE.svg, 'svg');

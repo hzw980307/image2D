@@ -1,124 +1,28 @@
 /*!
 * image2D - 🍇 使用ECMAScript绘制二维图片。Drawing Two-Dimensional Pictures Using ECMAScript.
-* git+https://github.com/yelloxing/image2D.git
+* git+https://github.com/hai2007/image2D.git
 *
 * For online documents, please visit
-* https://yelloxing.gitee.io/image2d/index.html
+* https://hai2007.gitee.io/image2d/index.html
 *
-* author yelloxing
+* author 你好2007
 *
-* version 1.10.4
+* version 1.13.0
 *
 * build Thu Apr 11 2019
 *
-* Copyright yelloxing
+* Copyright hai2007 < https://hai2007.gitee.io/sweethome/ >
 * Released under the MIT license
 *
-* Date:Sun Sep 20 2020 10:00:54 GMT+0800 (GMT+08:00)
+* Date:Sun Jan 10 2021 11:34:38 GMT+0800 (GMT+08:00)
 */
 
-'use strict';
+"use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 (function () {
     'use strict';
-
-    var toString = Object.prototype.toString;
-
-    /**
-     * 获取一个值的类型字符串[object type]
-     *
-     * @private
-     * @param {*} value 需要返回类型的值
-     * @returns {string} 返回类型字符串
-     */
-    function getType(value) {
-        if (value == null) {
-            return value === undefined ? '[object Undefined]' : '[object Null]';
-        }
-        return toString.call(value);
-    }
-
-    /**
-     * 判断一个值是不是一个朴素的'对象'
-     *
-     * @private
-     * @param {*} value 需要判断类型的值
-     * @returns {boolean} 如果是朴素的'对象'返回true，否则返回false
-     */
-
-    function isPlainObject(value) {
-        if (value === null || (typeof value === 'undefined' ? 'undefined' : _typeof(value)) !== 'object' || getType(value) != '[object Object]') {
-            return false;
-        }
-
-        // 如果原型为null
-        if (Object.getPrototypeOf(value) === null) {
-            return true;
-        }
-
-        var proto = value;
-        while (Object.getPrototypeOf(proto) !== null) {
-            proto = Object.getPrototypeOf(proto);
-        }
-        return Object.getPrototypeOf(value) === proto;
-    }
-
-    /**
-     * 判断一个值是不是结点元素。
-     *
-     * @since V0.1.2
-     * @public
-     * @param {*} value 需要判断类型的值
-     * @returns {boolean} 如果是结点元素返回true，否则返回false
-     */
-    function isElement(value) {
-        return value !== null && (typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' && (value.nodeType === 1 || value.nodeType === 9 || value.nodeType === 11) && !isPlainObject(value);
-    }
-
-    /**
-     * 判断一个值是不是Object。
-     *
-     * @since V0.1.2
-     * @public
-     * @param {*} value 需要判断类型的值
-     * @returns {boolean} 如果是Object返回true，否则返回false
-     */
-    function isObject(value) {
-        var type = typeof value === 'undefined' ? 'undefined' : _typeof(value);
-        return value != null && (type === 'object' || type === 'function');
-    }
-
-    /**
-     * 判断一个值是不是Function。
-     *
-     * @since V0.1.2
-     * @public
-     * @param {*} value 需要判断类型的值
-     * @returns {boolean} 如果是Function返回true，否则返回false
-     */
-    function isFunction(value) {
-        if (!isObject(value)) {
-            return false;
-        }
-
-        var type = getType(value);
-        return type === '[object Function]' || type === '[object AsyncFunction]' || type === '[object GeneratorFunction]' || type === '[object Proxy]';
-    }
-
-    /**
-     * 判断一个值是不是String。
-     *
-     * @since V0.1.2
-     * @public
-     * @param {*} value 需要判断类型的值
-     * @returns {boolean} 如果是String返回true，否则返回false
-     */
-    function isString(value) {
-        var type = typeof value === 'undefined' ? 'undefined' : _typeof(value);
-        return type === 'string' || type === 'object' && value != null && !Array.isArray(value) && getType(value) === '[object String]';
-    }
 
     /**
      * 初始化配置文件
@@ -126,6 +30,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      * @param {Json} data
      * @return {Json}
      */
+
     var initConfig = function initConfig(init, data) {
         for (var key in data) {
             try {
@@ -162,16 +67,123 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     var XLINK_ATTRIBUTE = ["href", "title", "show", "type", "role", "actuate"];
 
     /**
-     * 判断一个值是不是文本结点。
+     * 判断一个值是不是Object。
      *
-     * @since V0.1.2
-     * @public
      * @param {*} value 需要判断类型的值
-     * @returns {boolean} 如果是结点元素返回true，否则返回false
+     * @returns {boolean} 如果是Object返回true，否则返回false
      */
-    function isText(value) {
-        return value !== null && (typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' && value.nodeType === 3 && !isPlainObject(value);
+    function _isObject(value) {
+        var type = typeof value === "undefined" ? "undefined" : _typeof(value);
+        return value != null && (type === 'object' || type === 'function');
     }
+
+    var toString = Object.prototype.toString;
+
+    /**
+     * 获取一个值的类型字符串[object type]
+     *
+     * @param {*} value 需要返回类型的值
+     * @returns {string} 返回类型字符串
+     */
+    function getType(value) {
+        if (value == null) {
+            return value === undefined ? '[object Undefined]' : '[object Null]';
+        }
+        return toString.call(value);
+    }
+
+    /**
+     * 判断一个值是不是number。
+     *
+     * @param {*} value 需要判断类型的值
+     * @returns {boolean} 如果是number返回true，否则返回false
+     */
+    function _isNumber(value) {
+        return typeof value === 'number' || value !== null && (typeof value === "undefined" ? "undefined" : _typeof(value)) === 'object' && getType(value) === '[object Number]';
+    }
+
+    /**
+     * 判断一个值是不是String。
+     *
+     * @param {*} value 需要判断类型的值
+     * @returns {boolean} 如果是String返回true，否则返回false
+     */
+    function _isString(value) {
+        var type = typeof value === "undefined" ? "undefined" : _typeof(value);
+        return type === 'string' || type === 'object' && value != null && !Array.isArray(value) && getType(value) === '[object String]';
+    }
+
+    /**
+     * 判断一个值是不是Function。
+     *
+     * @param {*} value 需要判断类型的值
+     * @returns {boolean} 如果是Function返回true，否则返回false
+     */
+    function _isFunction(value) {
+        if (!_isObject(value)) {
+            return false;
+        }
+
+        var type = getType(value);
+        return type === '[object Function]' || type === '[object AsyncFunction]' || type === '[object GeneratorFunction]' || type === '[object Proxy]';
+    }
+
+    /**
+     * 判断一个值是不是一个朴素的'对象'
+     * 所谓"纯粹的对象"，就是该对象是通过"{}"或"new Object"创建的
+     *
+     * @param {*} value 需要判断类型的值
+     * @returns {boolean} 如果是朴素的'对象'返回true，否则返回false
+     */
+
+    function _isPlainObject(value) {
+        if (value === null || (typeof value === "undefined" ? "undefined" : _typeof(value)) !== 'object' || getType(value) != '[object Object]') {
+            return false;
+        }
+
+        // 如果原型为null
+        if (Object.getPrototypeOf(value) === null) {
+            return true;
+        }
+
+        var proto = value;
+        while (Object.getPrototypeOf(proto) !== null) {
+            proto = Object.getPrototypeOf(proto);
+        }
+        return Object.getPrototypeOf(value) === proto;
+    }
+
+    var domTypeHelp = function domTypeHelp(types, value) {
+        return value !== null && (typeof value === "undefined" ? "undefined" : _typeof(value)) === 'object' && types.indexOf(value.nodeType) > -1 && !_isPlainObject(value);
+    };
+
+    /*!
+     * 💡 - 值类型判断方法
+     * https://github.com/hai2007/tool.js/blob/master/type.js
+     *
+     * author hai2007 < https://hai2007.gitee.io/sweethome >
+     *
+     * Copyright (c) 2020-present hai2007 走一步，再走一步。
+     * Released under the MIT license
+     */
+
+    var isObject = _isObject;
+    var isNumber = _isNumber;
+    var isString = _isString;
+
+    // 引用类型
+    var isFunction = _isFunction;
+    var isArray = function isArray(input) {
+        return Array.isArray(input);
+    };
+
+    // 结点类型
+    var isElement = function isElement(input) {
+        return domTypeHelp([1, 9, 11], input);
+    };
+    var isText = function isText(input) {
+        return domTypeHelp([3], input);
+    };
 
     /**
      * 设置svg字符串
@@ -266,7 +278,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             // 如果采用别的标签，比如div,这类标签无法生成
             // 为了方便校对，这里给出提示
             if (!/</.test(frame.innerHTML)) {
-                throw new Error('This template cannot be generated using div as a container:' + template + "\nPlease contact us: https://github.com/yelloxing/image2D/issues");
+                throw new Error('This template cannot be generated using div as a container:' + template + "\nPlease contact us: https://github.com/hai2007/image2D/issues");
             }
         } else {
             frame = document.createElementNS(NAMESPACE.svg, 'svg');
@@ -560,16 +572,25 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
     image2D.prototype.init.prototype = image2D.prototype;
 
-    /**
-     * 无论绘制的树结构是什么样子的
-     * 计算时都假想目标树的样子如下：
-     *  1.根结点在最左边，且上下居中
-     *  2.树是从左往右生长的结构
-     *  3.每个结点都是一块1*1的正方形，top和left分别表示正方形中心的位置
-     * @since V0.2.0
-     * @public
+    /*!
+     * 🔪 - 基本的树结构位置生成算法
+     * https://github.com/hai2007/algorithm.js/blob/master/tree.js
+     *
+     * author hai2007 < https://hai2007.gitee.io/sweethome >
+     *
+     * Copyright (c) 2020-present hai2007 走一步，再走一步。
+     * Released under the MIT license
      */
+
     function treeLayout(_config) {
+
+        /**
+         * 无论绘制的树结构是什么样子的
+         * 计算时都假想目标树的样子如下：
+         *  1.根结点在最左边，且上下居中
+         *  2.树是从左往右生长的结构
+         *  3.每个结点都是一块1*1的正方形，top和left分别表示正方形中心的位置
+         */
 
         var config = _config || {},
 
@@ -683,10 +704,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                 "id": id,
                 "children": []
             };
+
+            var num = 1;
             // 根据传递的原始数据，生成内部统一结构
             (function createTree(pdata, pid) {
                 var children = config.child(pdata, initTree),
                     flag = void 0;
+                num += children ? children.length : 0;
                 for (flag = 0; children && flag < children.length; flag++) {
                     id = config.id(children[flag]);
                     tempTree[pid].children.push(id);
@@ -700,7 +724,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                 }
             })(temp, id);
 
-            return [rid, tempTree];
+            return {
+                value: [rid, tempTree],
+                num: num
+            };
         };
 
         // 可以传递任意格式的树原始数据
@@ -708,8 +735,20 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         var tree = function tree(initTree) {
 
             var treeData = toInnerTree(initTree);
-            alltreedata = treeData[1];
-            rootid = treeData[0];
+            alltreedata = treeData.value[1];
+            rootid = treeData.value[0];
+
+            if (treeData.num == 1) {
+                alltreedata[rootid].left = 0.5;
+                alltreedata[rootid].top = 0.5;
+                return {
+                    deep: 1,
+                    node: alltreedata,
+                    root: rootid,
+                    size: 1
+                };
+            }
+
             return update();
         };
 
@@ -863,23 +902,40 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                 }
             } else if (config.type === 'circle') {
 
-                // 每层间距
-                var _dis3 = config.radius / (orgData.deep - 1);
-                // 兄弟间隔弧度
-                var _dis4 = config.deg / (orgData.size - -0.5);
-                for (var _i4 in orgData.node) {
-                    var _node3 = orgData.node[_i4];
-                    orgData.node[_i4].deg = (config['begin-deg'] - -_dis4 * _node3.top) % (Math.PI * 2);
-                    var pos = _rotate2(config.cx, config.cy, orgData.node[_i4].deg, config.cx - -_dis3 * (_node3.left - 0.5), config.cy);
-                    orgData.node[_i4].left = +pos[0];
-                    orgData.node[_i4].top = +pos[1];
+                // 如果只有一个结点
+                if (orgData.deep == 1 && orgData.size == 1) {
+                    orgData.node[orgData.root].left = config.cx;
+                    orgData.node[orgData.root].top = config.cy;
                 }
+
+                // 如果有多个结点
+                else {
+
+                        // 每层间距
+                        var _dis3 = config.radius / (orgData.deep - 1);
+                        // 兄弟间隔弧度
+                        var _dis4 = config.deg / (orgData.size - -0.5);
+                        for (var _i4 in orgData.node) {
+                            var _node3 = orgData.node[_i4];
+                            orgData.node[_i4].deg = (config['begin-deg'] - -_dis4 * _node3.top) % (Math.PI * 2);
+                            var pos = _rotate2(config.cx, config.cy, orgData.node[_i4].deg, config.cx - -_dis3 * (_node3.left - 0.5), config.cy);
+                            orgData.node[_i4].left = +pos[0];
+                            orgData.node[_i4].top = +pos[1];
+                        }
+                    }
             }
 
             // 启动绘图
-            config.drawer(orgData);
+            if (isFunction(config.drawer)) {
 
-            return treeObj;
+                // 如果配置了绘图方法，就调用绘图方法
+                config.drawer(orgData);
+                return treeObj;
+            } else {
+
+                // 否则返回数据
+                return orgData;
+            }
         };
 
         // 配置
@@ -895,18 +951,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         };
 
         return treeObj;
-    }
-
-    /**
-     * 判断一个值是不是number。
-     *
-     * @since V0.1.3
-     * @public
-     * @param {*} value 需要判断类型的值
-     * @returns {boolean} 如果是number返回true，否则返回false
-     */
-    function isNumber(value) {
-        return typeof value === 'number' || value !== null && (typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' && getType(value) === '[object Number]';
     }
 
     function pieLayout(config) {
@@ -975,6 +1019,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             // 启动绘图
             if (isFunction(config.drawer)) {
                 config.drawer(innerData);
+                return pieObj;
+            } else {
+                return innerData;
             }
         };
 
@@ -995,7 +1042,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
     /**
      * 在(a,b,c)方向位移d
-     * @private
      */
     function _move(d, a, b, c) {
         c = c || 0;
@@ -1007,8 +1053,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      * 围绕0Z轴旋转
      * 其它的旋转可以借助transform实现
      * 旋转角度单位采用弧度制
-     * 
-     * @private
      */
     function _rotate(deg) {
         var sin = Math.sin(deg),
@@ -1018,8 +1062,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
     /**
      * 围绕圆心x、y和z分别缩放xTimes, yTimes和zTimes倍
-     * 
-     * @private
      */
     function _scale(xTimes, yTimes, zTimes, cx, cy, cz) {
         cx = cx || 0;cy = cy || 0;cz = cz || 0;
@@ -1030,8 +1072,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      * 针对任意射线(a1,b1,c1)->(a2,b2,c2)
      * 计算出二个变换矩阵
      * 分别为：任意射线变成OZ轴变换矩阵 + OZ轴变回原来的射线的变换矩阵
-     * 
-     * @private
      */
     function _transform(a1, b1, c1, a2, b2, c2) {
 
@@ -1082,12 +1122,16 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         }return newParam;
     };
 
-    /**
-     * 4x4矩阵
-     * 列主序存储
-     * @since V0.2.0
-     * @public
+    /*!
+     * 💡 - 列主序存储的4x4矩阵
+     * https://github.com/hai2007/tool.js/blob/master/Matrix4.js
+     *
+     * author hai2007 < https://hai2007.gitee.io/sweethome >
+     *
+     * Copyright (c) 2020-present hai2007 走一步，再走一步。
+     * Released under the MIT license
      */
+
     function Matrix4(initMatrix4) {
 
         var matrix4 = initMatrix4 || [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
@@ -1152,10 +1196,17 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     //定时器ID
     var $timerId = null;
 
+    /*!
+     * 💡 - 动画轮播
+     * https://github.com/hai2007/tool.js/blob/master/animation.js
+     *
+     * author hai2007 < https://hai2007.gitee.io/sweethome >
+     *
+     * Copyright (c) 2020-present hai2007 走一步，再走一步。
+     * Released under the MIT license
+     */
+
     /**
-     * 动画轮播
-     * @since V0.2.0
-     * @public
      * @param {function} doback 轮询函数，有一个形参deep，0-1，表示执行进度
      * @param {number} duration 动画时长，可选
      * @param {function} callback 动画结束回调，可选，有一个形参deep，0-1，表示执行进度
@@ -1253,69 +1304,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         };
     }
 
-    var MAX_SAFE_INTEGER = 9007199254740991;
-
-    /**
-     * 判断是不是一个可以作为长度的整数（比如数组下标）
-     *
-     * @private
-     * @param {any} value 需要判断的值
-     * @returns {boolean} 如果是返回true，否则返回false
-     */
-
-    function isLength(value) {
-
-        return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-    }
-
-    /**
-     * 判断是不是一个类似数组的对象，是否可以通过length迭代
-     *
-     *
-     * @private
-     * @param {any} value 需要判断的值
-     * @returns {boolean} 如果是返回true，否则返回false
-     */
-
-    function isArrayLike(value) {
-
-        return value != null && typeof value != 'function' && isLength(value.length);
-    }
-
-    /**
-     * 和isArrayLike类似，不过特别排除以下类型：
-     *  1.字符串
-     *
-     * @private
-     * @param {any} value 需要判断的值
-     * @returns {boolean} 如果是返回true，否则返回false
-     */
-
-    function isArraySpec(value) {
-
-        return isArrayLike(value) && !isString(value);
-    }
-
-    /**
-     * 判断一个值是不是数组。
-     *
-     * @since V0.3.1
-     * @public
-     * @param {*} value 需要判断类型的值
-     * @param {boolean} notStrict 是否不严格检查类型（默认false，如果为true表示判断是不是一个类似数组的类型）
-     * @returns {boolean} 如果是数组返回true，否则返回false
-     */
-    function isArray(value, notStrict) {
-        if (notStrict) {
-            return isArraySpec(value);
-        }
-        return Array.isArray(value);
-    }
-
     /**
      * 初始化配置文件
-     * 
-     * @private
+     *
      * @param {Json} init 默认值
      * @param {Json} data
      * @return {Json}
@@ -1330,12 +1321,16 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         }return init;
     }
 
-    /**
-     * Hermite三次插值
-     * @since V0.2.0
-     * @public
-     * @param {Json} config 可选
+    /*!
+     * 💡 - Hermite三次插值
+     * https://github.com/hai2007/tool.js/blob/master/Hermite.js
+     *
+     * author hai2007 < https://hai2007.gitee.io/sweethome >
+     *
+     * Copyright (c) 2020-present hai2007 走一步，再走一步。
+     * Released under the MIT license
      */
+
     function hermite(config) {
 
         config = initConfig$1({
@@ -2159,7 +2154,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     };
 
     // 加强版本的画笔
-    function painter_canvas2D(canvas) {
+    function painter_canvas2D(canvas, noHiddenWarn) {
 
         // 获取canvas2D画笔
         var painter = canvas.getContext("2d");
@@ -2173,7 +2168,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         height = isLayer ? canvas.getAttribute('height') : canvas.clientHeight;
 
         if (width == 0 || height == 0) {
-            console.warn('Canvas is hidden or size is zero!');
+
+            if (!noHiddenWarn) console.warn('Canvas is hidden or size is zero!');
 
             if (canvas.__image2D__noLayer_getSize__ == 'yes') {
 
@@ -2891,7 +2887,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             nodeName = target.nodeName.toLowerCase();
 
         // canvas2D
-        if (nodeName === 'canvas') return painter_canvas2D(target);
+        if (nodeName === 'canvas') return painter_canvas2D(target, arguments[0]);
 
         // svg
         if (nodeName === 'svg') return painter_svg(target, arguments[0]);
@@ -3031,8 +3027,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
     image2D.fn = image2D.prototype;
 
+    // 添加版本信息，方便调试
+    image2D.version = '1.11.0';
+
     // 判断当前环境，如果不是浏览器环境
-    if ((typeof module === 'undefined' ? 'undefined' : _typeof(module)) === "object" && _typeof(module.exports) === "object") {
+    if ((typeof module === "undefined" ? "undefined" : _typeof(module)) === "object" && _typeof(module.exports) === "object") {
         module.exports = image2D;
     }
     // 浏览器环境下
@@ -3072,7 +3071,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             window.image2D = window.$$ = image2D;
         }
 })();
-                    
+
 /*!
 
     我还惊讶地意识到， 在我生命中有很多时刻， 每当我遇到一个遥不可及、令人害怕的情境，

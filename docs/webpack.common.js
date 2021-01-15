@@ -1,11 +1,14 @@
 const iCrushLoaderPlugin = require('icrush-loader-plug');
+const fs = require('fs');
+
+const pkg = JSON.parse(fs.readFileSync('./package.json'));
 
 module.exports = {
     entry: ['./src/entry.js'],
     output: {
         path: __dirname,
-        filename: 'dist/main.js',
-        chunkFilename: 'dist/bundle.[name].js'
+        filename: 'dist/image2D.docs@v' + pkg.version + '.js',
+        chunkFilename: 'dist/image2D.docs@v' + pkg.version + '-bundle[name].js'
     },
     module: {
         rules: [{

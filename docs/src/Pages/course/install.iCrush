@@ -22,7 +22,7 @@
         </p>
         <p>
             每个版本的更新日志见
-            <a href="https://github.com/yelloxing/image2D/blob/master/CHANGELOG" target="_blank">GitHub</a>
+            <a href="https://github.com/hai2007/image2D/blob/master/CHANGELOG" target="_blank">GitHub</a>
             。
         </p>
         <h1 id='fixed-script'>
@@ -83,9 +83,7 @@
             ，可能和之前直接使用本库不一样，比如你选择了SVG作为画笔，这样，Canvas部分对你而言可能就是“累赘”，我们希望提供按需导入的方式来帮助你减小你基于image2D开发的项目的最终产品尺寸。
         </p>
         <p>
-            你可以参考这个项目：
-            <a href="https://github.com/AC-graph/lookview" target="_blank">lookview</a>
-            来看看具体的例子，下面，我们来说明一下如何实现：
+            我们来说明一下如何实现：
         </p>
         <div ui-copy>
             <pre class="prettyprint">import {
@@ -125,7 +123,7 @@
         <div ui-copy>
             <pre class="prettyprint">// 挂载需要的静态方法
 image2D.extend({
-    
+
     animation
 
 });
@@ -149,7 +147,7 @@ export default image2D;</pre>
         </p>
         <p>
             如果上面有没有说清楚的，欢迎去
-            <a href="https://github.com/yelloxing/image2D/issues" target="_blank">issue</a>
+            <a href="https://github.com/hai2007/image2D/issues" target="_blank">issue</a>
             给我们留言！
         </p>
     </div>
